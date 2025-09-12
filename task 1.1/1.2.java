@@ -3,15 +3,36 @@ import java.util.ArrayList;
 
 public class MinimalList {
     public static void main(String[] args) {
-        // Создаем список
+        
         ArrayList<String> fruits = new ArrayList<>();
         
-        // Добавляем элементы
+        
         fruits.add("Яблоко");
         fruits.add("Груша");
         fruits.add("Вишня");
         
-        // Выводим
+        
         System.out.println(fruits);
+    }
+}
+
+
+// создание стека 
+import java.util.Stack;
+
+public class MinimalStack {
+    public static void main(String[] args) {
+        Stack<String> stack = new Stack<>();
+        
+        stack.push("Первый");
+        stack.push("Второй");
+        stack.push("Третий");
+        
+        System.out.println("Стек: " + stack);
+        System.out.println("Верхний: " + stack.peek());
+        
+        while (!stack.isEmpty()) {
+            System.out.println("Извлекли: " + stack.pop());
+        }
     }
 }
