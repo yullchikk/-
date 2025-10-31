@@ -1,529 +1,409 @@
+//Сортировка выбором 
+
 public class SelectionSort {
- 
-   // Метод, реализующий сортировку выбором
-   public static void selectionSort(int[] array) {
-       int n = array.length; // Получаем длину массива
-       
-       for (int i = 0; i < n - 1; i++) { // Проходим по массиву слева направо
-           int minIndex = i; // Предполагаем, что минимальный элемент находится на текущей позиции
-           
-           // Ищем минимальное значение справа от текущего индекса
-           for (int j = i + 1; j < n; j++) {
-               if (array[j] < array[minIndex]) { // Если нашли меньший элемент
-                   minIndex = j; // Запоминаем индекс нового минимума
-               }
-           }
-           
-           // Меняем местами найденный минимум с элементом на текущей позиции
-           swap(array, i, minIndex);
-       }
-   }
-   
-   // Вспомогательная функция для обмена двух элементов в массиве
-   private static void swap(int[] arr, int index1, int index2) {
-       int temp = arr[index1];     // Сохраняем первый элемент временно
-       arr[index1] = arr[index2];   // Присваиваем первому элементу второй
-       arr[index2] = temp;         // Второй элемент становится первым
-   }
-   
-   // Основная точка входа программы
-   public static void main(String[] args) {
-       int[] exampleArray = {64, 25, 12, 22, 11}; // Пример массива
-       
-       System.out.println("Исходный массив:");
-       printArray(exampleArray); // Печать исходного массива
-       
-       selectionSort(exampleArray); // Сортируем массив методом выбора
-       
-       System.out.println("\nОтсортированный массив:");
-       printArray(exampleArray); // Печать отсортированного массива
-   }
-   
-   // Функция для печати содержимого массива
-   private static void printArray(int[] arr) {
-       for (int value : arr) {
-           System.out.print(value + " ");
-       }
-       System.out.println();
-   }
+    public static void selectionSort(int[] arr) {
+        // Проходим по всем элементам массива, кроме последнего
+        for (int i = 0; i < arr.length - 1; i++) {
+            // Предполагаем, что минимальный элемент находится на текущей позиции i
+            int minIndex = i;
+            
+            // Ищем минимальный элемент в оставшейся части массива
+            for (int j = i + 1; j < arr.length; j++) {
+                // Если находим элемент меньше текущего минимального
+                if (arr[j] < arr[minIndex]) {
+                    // Обновляем индекс минимального элемента
+                    minIndex = j;
+                }
+            }
+            
+            // Если минимальный элемент не на своем месте, меняем их местами
+            if (minIndex != i) {
+                int temp = arr[i];      // Сохраняем текущий элемент во временной переменной
+                arr[i] = arr[minIndex]; // Заменяем текущий элемент минимальным
+                arr[minIndex] = temp;   // Заменяем минимальный элемент сохраненным
+            }
+        }
+    }
 }
+
+//сортировка обменом 
+
 public class BubbleSort {
- 
-   // Реализация метода пузырьковой сортировки
-   public static void bubbleSort(int[] array) {
-       int n = array.length; // Длина массива
-       
-       // Цикл по всей длине массива
-       for (int i = 0; i < n - 1; i++) {
-           boolean swapped = false; // Флаг, сигнализирующий, были ли изменения
-           
-           // Внутренний цикл идет до последнего неотсортированного элемента
-           for (int j = 0; j < n - i - 1; j++) {
-               // Проверяем, больше ли текущий элемент следующего
-               if (array[j] > array[j + 1]) {
-                   // Меняем элементы местами
-                   int temp = array[j];
-                   array[j] = array[j + 1];
-                   array[j + 1] = temp;
-                   
-                   swapped = true; // Изменили порядок, значит была замена
-               }
-           }
-           
-           // Если ни одной замены не произошло, массив уже отсортирован
-           if (!swapped) break;
-       }
-   }
-   
-   // Основной метод для запуска примера
-   public static void main(String[] args) {
-       int[] exampleArray = {64, 34, 25, 12, 22, 11};
-       
-       System.out.println("Исходный массив:");
-       printArray(exampleArray); // выводим начальное состояние массива
-       
-       bubbleSort(exampleArray); // запускаем сортировку
-       
-       System.out.println("\nОтсортированный массив:");
-       printArray(exampleArray); // выводим конечное состояние массива
-   }
-   
-   // Простая вспомогательная функция для вывода массива
-   private static void printArray(int[] arr) {
-       for (int value : arr) {
-           System.out.print(value + " ");
-       }
-       System.out.println(); // Перевод строки
-   }
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length; // Получаем длину массива
+        
+        // Внешний цикл - количество проходов по массиву
+        for (int i = 0; i < n - 1; i++) {
+            // Внутренний цикл - сравнение соседних элементов
+            for (int j = 0; j < n - i - 1; j++) {
+                // Если текущий элемент больше следующего
+                if (arr[j] > arr[j + 1]) {
+                    // Меняем элементы местами
+                    int temp = arr[j];     // Сохраняем текущий элемент
+                    arr[j] = arr[j + 1];   // Заменяем текущий элемент следующим
+                    arr[j + 1] = temp;     // Заменяем следующий элемент сохраненным
+                }
+            }
+        }
+    }
 }
+
+//сортировка вставками 
+
 public class InsertionSort {
- 
-   // Реализуем метод сортировки вставками
-   public static void insertionSort(int[] array) {
-       int n = array.length; // Определяем размер массива
-       
-       // Начинаем с второго элемента (i=1), считая первый элемент уже отсортированным
-       for (int i = 1; i < n; ++i) {
-           int key = array[i]; // Берём текущий элемент
-           int j = i - 1; // Переменная для движения назад по отсортированной части
-           
-           /* Двигаемся назад по отсортированной части,
-              пока ключ меньше предыдущего элемента */
-           while (j >= 0 && array[j] > key) {
-               array[j + 1] = array[j]; // Смещаем больший элемент вправо
-               j--;                     // Переходим к предыдущему элементу
-           }
-           
-           // Вставляем ключ на его правильную позицию
-           array[j + 1] = key;
-       }
-   }
-   
-   // Главный метод для демонстрации работы
-   public static void main(String[] args) {
-       int[] exampleArray = {12, 11, 13, 5, 6};
-       
-       System.out.println("Исходный массив:");
-       printArray(exampleArray); // Показываем первоначальный массив
-       
-       insertionSort(exampleArray); // Применяем сортировку вставками
-       
-       System.out.println("\nОтсортированный массив:");
-       printArray(exampleArray); // Отображаем отсортированный массив
-   }
-   
-   // Вспомогательная функция для отображения массива
-   private static void printArray(int[] arr) {
-       for (int value : arr) {
-           System.out.print(value + " ");
-       }
-       System.out.println(); // Перенос строки
-   }
+    public static void insertionSort(int[] arr) {
+        int n = arr.length; // Получаем длину массива
+        
+        // Начинаем со второго элемента (индекс 1)
+        for (int i = 1; i < n; i++) {
+            int key = arr[i]; // Запоминаем текущий элемент для вставки
+            int j = i - 1;    // Начинаем сравнение с предыдущего элемента
+            
+            // Сдвигаем элементы большие key вправо
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j]; // Сдвигаем элемент вправо
+                j = j - 1;           // Переходим к следующему элементу слева
+            }
+            
+            // Вставляем key на правильную позицию
+            arr[j + 1] = key;
+        }
+    }
 }
-import java.util.Arrays;
- 
+
+//сортировка слиянием 
+
 public class MergeSort {
- 
-   // Реализуем основную процедуру сортировки слиянием
-   public static void mergeSort(int[] array) {
-       if (array.length <= 1) return; // Базовый случай рекурсии
-       
-       // Разделяем массив пополам
-       int mid = array.length / 2;
-       int[] leftHalf = Arrays.copyOfRange(array, 0, mid); // Левая половина
-       int[] rightHalf = Arrays.copyOfRange(array, mid, array.length); // Правая половина
-       
-       // Рекурсивно сортируем левую и правую половину
-       mergeSort(leftHalf);
-       mergeSort(rightHalf);
-       
-       // Объединяем отсортированные половины
-       merge(array, leftHalf, rightHalf);
-   }
-   
-   // Процедура объединения двух отсортированных частей в единый массив
-   private static void merge(int[] result, int[] left, int[] right) {
-       int i = 0, j = 0, k = 0; // Индексы для левого, правого и результирующего массивов
-       
-       // Пока оба массива содержат элементы
-       while (i < left.length && j < right.length) {
-           if (left[i] <= right[j]) { // Выбираем меньший элемент
-               result[k++] = left[i++]; // Добавляем элемент из левой части
-           } else {
-               result[k++] = right[j++]; // Добавляем элемент из правой части
-           }
-       }
-       
-       // Копируем оставшиеся элементы из левой части, если они остались
-       while (i < left.length) {
-           result[k++] = left[i++];
-       }
-       
-       // Копируем оставшиеся элементы из правой части, если они остались
-       while (j < right.length) {
-           result[k++] = right[j++];
-       }
-   }
-   
-   // Точка входа программы
-   public static void main(String[] args) {
-       int[] exampleArray = {38, 27, 43, 3, 9, 82, 10};
-       
-       System.out.println("Исходный массив:");
-       printArray(exampleArray); // Выводим исходный массив
-       
-       mergeSort(exampleArray); // Выполняем сортировку слиянием
-       
-       System.out.println("\nОтсортированный массив:");
-       printArray(exampleArray); // Выводим отсортированный массив
-   }
-   
-   // Вспомогательная функция для вывода массива
-   private static void printArray(int[] arr) {
-       for (int value : arr) {
-           System.out.print(value + " ");
-       }
-       System.out.println(); // Перенос строки
-   }
+    // Основной метод сортировки
+    public static void mergeSort(int[] arr, int left, int right) {
+        // Если левая граница меньше правой (есть что сортировать)
+        if (left < right) {
+            // Находим среднюю точку для разделения массива
+            int mid = left + (right - left) / 2;
+            
+            // Рекурсивно сортируем левую половину
+            mergeSort(arr, left, mid);
+            
+            // Рекурсивно сортируем правую половину
+            mergeSort(arr, mid + 1, right);
+            
+            // Объединяем отсортированные половины
+            merge(arr, left, mid, right);
+        }
+    }
+    
+    // Метод для слияния двух отсортированных массивов
+    private static void merge(int[] arr, int left, int mid, int right) {
+        // Вычисляем размеры временных массивов
+        int n1 = mid - left + 1; // Размер левого подмассива
+        int n2 = right - mid;    // Размер правого подмассива
+        
+        // Создаем временные массивы
+        int[] leftArr = new int[n1];
+        int[] rightArr = new int[n2];
+        
+        // Копируем данные во временные массивы
+        for (int i = 0; i < n1; i++) {
+            leftArr[i] = arr[left + i];
+        }
+        for (int j = 0; j < n2; j++) {
+            rightArr[j] = arr[mid + 1 + j];
+        }
+        
+        // Индексы для временных массивов и основного массива
+        int i = 0, j = 0, k = left;
+        
+        // Сливаем временные массивы обратно в основной массив
+        while (i < n1 && j < n2) {
+            // Выбираем меньший элемент из двух массивов
+            if (leftArr[i] <= rightArr[j]) {
+                arr[k] = leftArr[i]; // Берем элемент из левого массива
+                i++;                 // Переходим к следующему элементу левого массива
+            } else {
+                arr[k] = rightArr[j]; // Берем элемент из правого массива
+                j++;                  // Переходим к следующему элементу правого массива
+            }
+            k++; // Переходим к следующей позиции в основном массиве
+        }
+        
+        // Копируем оставшиеся элементы левого массива (если есть)
+        while (i < n1) {
+            arr[k] = leftArr[i];
+            i++;
+            k++;
+        }
+        
+        // Копируем оставшиеся элементы правого массива (если есть)
+        while (j < n2) {
+            arr[k] = rightArr[j];
+            j++;
+            k++;
+        }
+    }
 }
+
+//сортировка Шелла
+
 public class ShellSort {
- 
-   // Реализация процедуры сортировки Шелла
-   public static void shellSort(int[] array) {
-       int n = array.length; // длина массива
-       
-       // Используем классический интервал Хиббарда: h(i) = 2^i - 1
-       for (int gap = n / 2; gap > 0; gap /= 2) { // Уменьшаем расстояние между элементами
-           // Производим частичную сортировку для заданного расстояния
-           for (int i = gap; i < n; i += 1) {
-               int temp = array[i]; // сохраняем текущий элемент
-               
-               // Сдвигаем предыдущие элементы, если они больше текущего
-               int j;
-               for (j = i; j >= gap && array[j - gap] > temp; j -= gap) {
-                   array[j] = array[j - gap]; // сдвигаем элемент дальше
-               }
-               
-               // Вставляем текущий элемент на освободившееся место
-               array[j] = temp;
-           }
-       }
-   }
-   
-   // Демонстрационный метод для тестирования
-   public static void main(String[] args) {
-       int[] exampleArray = {23, 12, 1, 8, 34, 56, 7};
-       
-       System.out.println("Исходный массив:");
-       printArray(exampleArray); // выводим исходный массив
-       
-       shellSort(exampleArray); // применяем сортировку Шелла
-       
-       System.out.println("\nОтсортированный массив:");
-       printArray(exampleArray); // выводим отсортированный массив
-   }
-   
-   // Вспомогательная функция для вывода массива
-   private static void printArray(int[] arr) {
-       for (int value : arr) {
-           System.out.print(value + " ");
-       }
-       System.out.println(); // перенос строки
-   }
+    public static void shellSort(int[] arr) {
+        int n = arr.length; // Получаем длину массива
+        
+        // Начинаем с большого промежутка, затем уменьшаем его
+        for (int gap = n / 2; gap > 0; gap /= 2) {
+            // Выполняем сортировку вставками для этого промежутка
+            for (int i = gap; i < n; i++) {
+                // Сохраняем arr[i] во временной переменной
+                int temp = arr[i];
+                int j;
+                
+                // Сдвигаем элементы, пока не найдем правильную позицию для arr[i]
+                for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                    arr[j] = arr[j - gap]; // Сдвигаем элемент на gap позиций
+                }
+                
+                // Вставляем сохраненный элемент в правильную позицию
+                arr[j] = temp;
+            }
+        }
+    }
 }
+
+//быстрая сортировка 
+
 public class QuickSort {
- 
-   // Главная процедура быстрой сортировки
-   public static void quickSort(int[] array, int low, int high) {
-       if (low < high) {                      // Условие выхода из рекурсии
-           int pi = partition(array, low, high); // Находим точку разделения
-           
-           // Рекурсивно сортируем левую и правую части
-           quickSort(array, low, pi - 1);    // Сортируем левую сторону
-           quickSort(array, pi + 1, high);   // Сортируем правую сторону
-       }
-   }
-   
-   // Метод для разделения массива вокруг опорного элемента
-   private static int partition(int[] array, int low, int high) {
-       int pivot = array[high];             // Опорный элемент (обычно последний элемент)
-       int i = low - 1;                     // Индекс меньшей секции
-       
-       // Пересматриваем массив от низкого до высокого индексов
-       for (int j = low; j < high; j++) {
-           if (array[j] <= pivot) {           // Если текущий элемент меньше или равен опоре
-               i++;                           // Увеличим индекс меньших элементов
-               swap(array, i, j);            // Поменяем местами
-           }
-       }
-       
-       // Поместим опорный элемент на своё место
-       swap(array, i + 1, high);
-       return i + 1;                         // Возвращаем индекс опорного элемента
-   }
-   
-   // Вспомогательная функция для обмена местоположением элементов
-   private static void swap(int[] arr, int a, int b) {
-       int temp = arr[a];
-       arr[a] = arr[b];
-       arr[b] = temp;
-   }
-   
-   // Тестирование алгоритма
-   public static void main(String[] args) {
-       int[] exampleArray = {10, 7, 8, 9, 1, 5};
-       
-       System.out.println("Исходный массив:");
-       printArray(exampleArray); // Выводим исходный массив
-       
-       quickSort(exampleArray, 0, exampleArray.length - 1); // Применяем быструю сортировку
-       
-       System.out.println("\nОтсортированный массив:");
-       printArray(exampleArray); // Выводим отсортированный массив
-   }
-   
-   // Вспомогательная функция для вывода массива
-   private static void printArray(int[] arr) {
-       for (int value : arr) {
-           System.out.print(value + " ");
-       }
-       System.out.println(); // Перенос строки
-   }
+    // Основной метод быстрой сортировки
+    public static void quickSort(int[] arr, int low, int high) {
+        // Если есть что сортировать (low < high)
+        if (low < high) {
+            // Разделяем массив и получаем индекс опорного элемента
+            int pi = partition(arr, low, high);
+            
+            // Рекурсивно сортируем элементы до опорного
+            quickSort(arr, low, pi - 1);
+            
+            // Рекурсивно сортируем элементы после опорного
+            quickSort(arr, pi + 1, high);
+        }
+    }
+    
+    // Метод для разделения массива
+    private static int partition(int[] arr, int low, int high) {
+        // Выбираем последний элемент как опорный
+        int pivot = arr[high];
+        
+        // Индекс меньшего элемента (указывает на правильную позицию опорного)
+        int i = low - 1;
+        
+        // Проходим по всем элементам от low до high-1
+        for (int j = low; j < high; j++) {
+            // Если текущий элемент меньше или равен опорному
+            if (arr[j] <= pivot) {
+                i++; // Увеличиваем индекс меньшего элемента
+                
+                // Меняем местами arr[i] и arr[j]
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        
+        // Помещаем опорный элемент на правильную позицию
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+        
+        // Возвращаем позицию опорного элемента
+        return i + 1;
+    }
 }
+
+//пирамидальная сортировка 
+
 public class HeapSort {
-   
-   // Основная функция для сортировки массива методом heap sort
-   public static void heapSort(int[] arr) {
-       int n = arr.length;
-       
-       // Шаг 1: строим max-кучу (перестановка элементов)
-       for (int i = n / 2 - 1; i >= 0; i--) { // начинаем с середины и идём назад
-           heapify(arr, n, i);              // превращаем дерево в кучу снизу-вверх
-       }
-       
-       // Шаг 2: извлекаем элементы из кучи последовательно и сортируем
-       for (int i = n - 1; i > 0; i--) {
-           swap(arr, 0, i);                // меняем корень (max-элемент) с последним элементом
-           heapify(arr, i, 0);             // восстанавливаем свойства кучи уменьшенной длины
-       }
-   }
-   
-   // Вспомогательная функция для перестройки дерева в max-кучу
-   private static void heapify(int[] arr, int size, int rootIndex) {
-       int largest = rootIndex;    // индекс наибольшего элемента
-       int leftChild = 2 * rootIndex + 1;   // левый потомок
-       int rightChild = 2 * rootIndex + 2; // правый потомок
-       
-       if (leftChild < size && arr[leftChild] > arr[largest]) {
-           largest = leftChild;      // проверяем левого ребёнка
-       }
-       
-       if (rightChild < size && arr[rightChild] > arr[largest]) {
-           largest = rightChild;     // проверяем правого ребёнка
-       }
-       
-       if (largest != rootIndex) {    // если произошло изменение максимума
-           swap(arr, rootIndex, largest); // меняем местами элементы
-           heapify(arr, size, largest);   // рекурсивно восстанавливаем кучу ниже
-       }
-   }
-   
-   // Простая вспомогательная функция для обмена двух элементов массива
-   private static void swap(int[] arr, int i, int j) {
-       int temp = arr[i];
-       arr[i] = arr[j];
-       arr[j] = temp;
-   }
+    public static void heapSort(int[] arr) {
+        int n = arr.length; // Получаем длину массива
+        
+        // Построение max-heap (перегруппировка массива)
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(arr, n, i);
+        }
+        
+        // Извлекаем элементы из кучи один за другим
+        for (int i = n - 1; i > 0; i--) {
+            // Перемещаем текущий корень в конец
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+            
+            // Вызываем heapify на уменьшенной куче
+            heapify(arr, i, 0);
+        }
+    }
+    
+    // Преобразование поддерева в max-heap
+    private static void heapify(int[] arr, int n, int i) {
+        int largest = i;        // Инициализируем наибольший элемент как корень
+        int left = 2 * i + 1;   // Левый дочерний элемент
+        int right = 2 * i + 2;  // Правый дочерний элемент
+        
+        // Если левый дочерний элемент больше корня
+        if (left < n && arr[left] > arr[largest]) {
+            largest = left;
+        }
+        
+        // Если правый дочерний элемент больше текущего наибольшего
+        if (right < n && arr[right] > arr[largest]) {
+            largest = right;
+        }
+        
+        // Если наибольший элемент не корень
+        if (largest != i) {
+            // Меняем местами корень и наибольший элемент
+            int swap = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = swap;
+            
+            // Рекурсивно преобразуем затронутое поддерево
+            heapify(arr, n, largest);
+        }
+    }
 }
+
+//последовательный поиск 
+
 public class LinearSearch {
- 
-   // Метод для реализации последовательного поиска
-   public static int linearSearch(int[] array, int target) {
-       // Проходим по каждому элементу массива
-       for (int i = 0; i < array.length; i++) {
-           // Если текущий элемент равен целевому числу
-           if (array[i] == target) {
-               return i; // Возвращаем индекс найденного элемента
-           }
-       }
-       return -1; // Если элемент не найден, возвращаем -1
-   }
- 
-   // Тестовая функция для демонстрации работы метода
-   public static void main(String[] args) {
-       int[] data = {3, 8, 1, 10, 5};
-       int key = 10;
-       int result = linearSearch(data, key);
-       
-       if (result != -1) {
-           System.out.println("Элемент " + key + " найден на индексе " + result);
-       } else {
-           System.out.println("Элемент " + key + " не найден");
-       }
-   }
+    public static int linearSearch(int[] arr, int target) {
+        // Проходим по всем элементам массива
+        for (int i = 0; i < arr.length; i++) {
+            // Если нашли целевой элемент
+            if (arr[i] == target) {
+                return i; // Возвращаем индекс найденного элемента
+            }
+        }
+        
+        // Если элемент не найден, возвращаем -1
+        return -1;
+    }
 }
+
+//бинарный поиск 
+
 public class BinarySearch {
- 
-   // Основной метод бинарного поиска
-   public static int binarySearch(int[] array, int target) {
-       int low = 0;         // Левая граница области поиска
-       int high = array.length - 1; // Правая граница области поиска
-       
-       while (low <= high) {           // Пока левая граница меньше или равна правой
-           int mid = low + (high - low) / 2; // Вычисляем середину
-           
-           if (array[mid] == target) {   // Если средний элемент равен цели
-               return mid;              // Возврат индекса
-           } else if (array[mid] < target) { // Если цель больше среднего элемента
-               low = mid + 1;            // Уменьшаем левую границу
-           } else {                       // Иначе цель меньше среднего элемента
-               high = mid - 1;           // Уменьшаем правую границу
-           }
-       }
-       return -1;                        // Цель не найдена
-   }
- 
-   // Тестовая функция для демонстрации работы
-   public static void main(String[] args) {
-       int[] sortedArray = {1, 3, 5, 7, 9, 11}; // Отсортированный массив
-       int searchKey = 7;                       // Искомое значение
-       int index = binarySearch(sortedArray, searchKey);
-       
-       if (index != -1) {
-           System.out.println("Значение " + searchKey + " найдено на индексе " + index);
-       } else {
-           System.out.println("Значение " + searchKey + " не найдено в массиве.");
-       }
-   }
+    public static int binarySearch(int[] arr, int target) {
+        int left = 0;                    // Левая граница поиска
+        int right = arr.length - 1;      // Правая граница поиска
+        
+        // Пока левая граница не превысила правую
+        while (left <= right) {
+            int mid = left + (right - left) / 2; // Находим середину
+            
+            // Если элемент в середине равен целевому
+            if (arr[mid] == target) {
+                return mid; // Возвращаем индекс
+            }
+            
+            // Если целевой элемент меньше среднего
+            if (arr[mid] > target) {
+                right = mid - 1; // Ищем в левой половине
+            } else {
+                left = mid + 1;  // Ищем в правой половине
+            }
+        }
+        
+        // Если элемент не найден
+        return -1;
+    }
 }
+
+//интерполирующий поиск 
+
 public class InterpolationSearch {
- 
-   // Основной метод интерполирующего поиска
-   public static int interpolationSearch(int[] array, int target) {
-       int low = 0;                    // Нижняя граница области поиска
-       int high = array.length - 1;    // Верхняя граница области поиска
-       
-       while ((low <= high) && (target >= array[low]) && (target <= array[high])) {
-           // Формула для оценки положения целевого элемента
-           int pos = low + (((double)(high - low) / (array[high] - array[low]))
-                            * (target - array[low]));
-           
-           // Если найден точный элемент
-           if (array[pos] == target) {
-               return pos;             // Вернуть индекс
-           }
-           
-           // Если цель находится левее предполагаемого места
-           if (array[pos] < target) {
-               low = pos + 1;          // Переносим нижнюю границу вправо
-           } else {
-               high = pos - 1;         // Переносим верхнюю границу влево
-           }
-       }
-       return -1;                      // Целевой элемент не найден
-   }
- 
-   // Тестовая функция для демонстрации работы
-   public static void main(String[] args) {
-       int[] sortedArray = {10, 15, 20, 25, 30, 35, 40, 45, 50}; // Большой равномерно распределённый массив
-       int searchKey = 35;                                         // Искомое значение
-       int index = interpolationSearch(sortedArray, searchKey);
-       
-       if (index != -1) {
-           System.out.println("Значение " + searchKey + " найдено на индексе " + index);
-       } else {
-           System.out.println("Значение " + searchKey + " не найдено в массиве.");
-       }
-   }
+    public static int interpolationSearch(int[] arr, int target) {
+        int low = 0;                    // Нижняя граница
+        int high = arr.length - 1;      // Верхняя граница
+        
+        // Пока целевой элемент находится между границами и границы не совпали
+        while (low <= high && target >= arr[low] && target <= arr[high]) {
+            // Если границы совпали
+            if (low == high) {
+                // Если элемент найден, возвращаем индекс
+                if (arr[low] == target) {
+                    return low;
+                }
+                return -1; // Иначе возвращаем -1
+            }
+            
+            // Вычисляем позицию с помощью интерполяционной формулы
+            int pos = low + ((target - arr[low]) * (high - low)) / (arr[high] - arr[low]);
+            
+            // Если элемент найден
+            if (arr[pos] == target) {
+                return pos; // Возвращаем позицию
+            }
+            
+            // Если целевой элемент меньше элемента в позиции pos
+            if (arr[pos] > target) {
+                high = pos - 1; // Ищем в левой части
+            } else {
+                low = pos + 1;  // Ищем в правой части
+            }
+        }
+        
+        // Если элемент не найден
+        return -1;
+    }
 }
-import java.util.Arrays;
- 
+
+//поиск Фибоначчи 
+
 public class FibonacciSearch {
- 
-   // Функция поиска элемента с использованием последовательности Фибоначчи
-   public static int fibonacciSearch(int[] array, int x) {
-       int m = findMinFibonacciNumberGreaterOrEqualTo(array.length); // находим минимальное число Фибоначчи >= длине массива
-       int offset = -1;                                              // смещение начала поиска
-       int f1 = 0;                                                   // предыдущее число Фибоначчи
-       int f2 = 1;                                                   // текущее число Фибоначчи
-       int nextF = m;                                                // следующее число Фибоначчи
-       
-       // Передвижение окна поиска
-       while (nextF > 1) {
-           int i = Math.min(offset + f1, array.length - 1);          // рассчитываем новую позицию
-           
-           // Если элемент больше искомого, двигаем окно вправо
-           if (array[i] < x) {
-               nextF = f2;
-               f2 = f1;
-               f1 = nextF - f2;
-               offset = i;
-           }
-           // Если элемент меньше искомого, двигаем окно влево
-           else if (array[i] > x) {
-               nextF = f1;
-               f2 -= f1;
-               f1 = nextF - f2;
-           }
-           // Если нашли элемент, возвращаем его индекс
-           else {
-               return i;
-           }
-       }
-       
-       // Последний проход по оставшимся двум элементам
-       if (f2 == 1 && array[offset + 1] == x) {
-           return offset + 1;
-       }
-       
-       return -1;                                                    // элемент не найден
-   }
- 
-   // Нахождение минимального числа Фибоначчи, большего или равного заданному числу
-   private static int findMinFibonacciNumberGreaterOrEqualTo(int length) {
-       int f1 = 0;
-       int f2 = 1;
-       int nextF = f1 + f2;
-       
-       while (nextF < length) {
-           f1 = f2;
-           f2 = nextF;
-           nextF = f1 + f2;
-       }
-       
-       return nextF;
-   }
- 
-   // Тестовая функция для демонстрации работы
-   public static void main(String[] args) {
-       int[] sortedArray = {10, 22, 35, 40, 45, 50, 80, 82, 85, 90, 100};
-       int x = 85;
-       int result = fibonacciSearch(sortedArray, x);
-       
-       if(result != -1){
-           System.out.println("Элемент " + x + " найден на индексе " + result);
-       }else{
-           System.out.println("Элемент " + x + " не найден в массиве.");
-       }
-   }
+    public static int fibonacciSearch(int[] arr, int target) {
+        int n = arr.length; // Длина массива
+        
+        // Инициализируем числа Фибоначчи
+        int fibMMm2 = 0;          // (m-2)-е число Фибоначчи
+        int fibMMm1 = 1;          // (m-1)-е число Фибоначчи
+        int fibM = fibMMm2 + fibMMm1; // m-е число Фибоначчи
+        
+        // Находим наименьшее число Фибоначчи, большее или равное n
+        while (fibM < n) {
+            fibMMm2 = fibMMm1;
+            fibMMm1 = fibM;
+            fibM = fibMMm2 + fibMMm1;
+        }
+        
+        int offset = -1; // Отметка об исключенном диапазоне
+        
+        // Пока есть элементы для проверки
+        while (fibM > 1) {
+            // Проверяем, valid ли fibMMm2
+            int i = Math.min(offset + fibMMm2, n - 1);
+            
+            // Если target больше значения в i, отсекаем подмассив от offset до i
+            if (arr[i] < target) {
+                fibM = fibMMm1;
+                fibMMm1 = fibMMm2;
+                fibMMm2 = fibM - fibMMm1;
+                offset = i;
+            }
+            // Если target меньше значения в i, отсекаем подмассив после i
+            else if (arr[i] > target) {
+                fibM = fibMMm2;
+                fibMMm1 = fibMMm1 - fibMMm2;
+                fibMMm2 = fibM - fibMMm1;
+            }
+            // Элемент найден
+            else {
+                return i;
+            }
+        }
+        
+        // Сравниваем последний элемент
+        if (fibMMm1 == 1 && arr[offset + 1] == target) {
+            return offset + 1;
+        }
+        
+        // Элемент не найден
+        return -1;
+    }
 }
