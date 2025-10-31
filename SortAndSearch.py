@@ -1,389 +1,351 @@
-# Сортировка выбором
-def selection_sort(array):
-    n = len(array)
-    
-    for i in range(n - 1):
+#Сортировка выбором 
+
+def selection_sort(arr):
+    """
+    Сортировка выбором - на каждом проходе находим минимальный элемент
+    и помещаем его на текущую позицию
+    """
+    # Проходим по всем элементам массива
+    for i in range(len(arr)):
+        # Предполагаем, что минимальный элемент находится на текущей позиции
         min_index = i
         
-        for j in range(i + 1, n):
-            if array[j] < array[min_index]:
+        # Ищем минимальный элемент в оставшейся части массива
+        for j in range(i + 1, len(arr)):
+            # Если находим элемент меньше текущего минимального
+            if arr[j] < arr[min_index]:
+                # Обновляем индекс минимального элемента
                 min_index = j
         
-        array[i], array[min_index] = array[min_index], array[i]
+        # Если минимальный элемент не на своем месте, меняем их местами
+        if min_index != i:
+            # Меняем элементы местами с использованием кортежного присваивания
+            arr[i], arr[min_index] = arr[min_index], arr[i]
+    
+    return arr
 
-def selection_sort_demo():
-    example_array = [64, 25, 12, 22, 11]
-    
-    print("Исходный массив:")
-    print_array(example_array)
-    
-    selection_sort(example_array)
-    
-    print("\nОтсортированный массив:")
-    print_array(example_array)
+#сортировка обменом 
 
-
-# Сортировка пузырьком
-def bubble_sort(array):
-    n = len(array)
+def bubble_sort(arr):
+    """
+    Пузырьковая сортировка - последовательно сравниваем соседние элементы
+    и меняем их местами, если они находятся в неправильном порядке
+    """
+    n = len(arr)  # Получаем длину массива
     
+    # Внешний цикл - количество проходов по массиву
     for i in range(n - 1):
-        swapped = False
+        # Внутренний цикл - сравнение соседних элементов
+        for j in range(0, n - i - 1):
+            # Если текущий элемент больше следующего
+            if arr[j] > arr[j + 1]:
+                # Меняем элементы местами
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    
+    return arr
+
+#сортировка вставками 
+
+def insertion_sort(arr):
+    """
+    Сортировка вставками - каждый следующий элемент вставляется
+    в правильную позицию в отсортированной части массива
+    """
+    # Начинаем со второго элемента (индекс 1)
+    for i in range(1, len(arr)):
+        key = arr[i]  # Запоминаем текущий элемент для вставки
+        j = i - 1     # Начинаем сравнение с предыдущего элемента
         
-        for j in range(n - i - 1):
-            if array[j] > array[j + 1]:
-                array[j], array[j + 1] = array[j + 1], array[j]
-                swapped = True
+        # Сдвигаем элементы большие key вправо
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]  # Сдвигаем элемент вправо
+            j -= 1               # Переходим к следующему элементу слева
         
-        if not swapped:
-            break
+        # Вставляем key на правильную позицию
+        arr[j + 1] = key
+    
+    return arr
 
-def bubble_sort_demo():
-    example_array = [64, 34, 25, 12, 22, 11]
-    
-    print("Исходный массив:")
-    print_array(example_array)
-    
-    bubble_sort(example_array)
-    
-    print("\nОтсортированный массив:")
-    print_array(example_array)
+#сортировка слиянием 
 
-
-# Сортировка вставками
-def insertion_sort(array):
-    n = len(array)
+def merge_sort(arr):
+    """
+    Сортировка слиянием - разделяй и властвуй:
+    массив делится пополам, каждая половина сортируется рекурсивно,
+    затем отсортированные половины сливаются
+    """
+    # Базовый случай: массивы длиной 0 или 1 уже отсортированы
+    if len(arr) <= 1:
+        return arr
     
-    for i in range(1, n):
-        key = array[i]
-        j = i - 1
-        
-        while j >= 0 and array[j] > key:
-            array[j + 1] = array[j]
-            j -= 1
-        
-        array[j + 1] = key
-
-def insertion_sort_demo():
-    example_array = [12, 11, 13, 5, 6]
+    # Находим среднюю точку для разделения массива
+    mid = len(arr) // 2
     
-    print("Исходный массив:")
-    print_array(example_array)
+    # Рекурсивно сортируем левую и правую половины
+    left_half = merge_sort(arr[:mid])
+    right_half = merge_sort(arr[mid:])
     
-    insertion_sort(example_array)
-    
-    print("\nОтсортированный массив:")
-    print_array(example_array)
-
-
-# Сортировка слиянием
-def merge_sort(array):
-    if len(array) <= 1:
-        return array
-    
-    mid = len(array) // 2
-    left_half = array[:mid]
-    right_half = array[mid:]
-    
-    left_half = merge_sort(left_half)
-    right_half = merge_sort(right_half)
-    
+    # Объединяем отсортированные половины
     return merge(left_half, right_half)
 
 def merge(left, right):
-    result = []
-    i = j = 0
+    """
+    Функция для слияния двух отсортированных массивов
+    """
+    result = []  # Результирующий массив
+    i = j = 0    # Индексы для левого и правого массивов
     
+    # Сливаем массивы, пока в обоих есть элементы
     while i < len(left) and j < len(right):
+        # Выбираем меньший элемент из двух массивов
         if left[i] <= right[j]:
-            result.append(left[i])
-            i += 1
+            result.append(left[i])  # Добавляем элемент из левого массива
+            i += 1                  # Переходим к следующему элементу левого массива
         else:
-            result.append(right[j])
-            j += 1
+            result.append(right[j]) # Добавляем элемент из правого массива
+            j += 1                  # Переходим к следующему элементу правого массива
     
-    result.extend(left[i:])
-    result.extend(right[j:])
+    # Добавляем оставшиеся элементы из левого массива (если есть)
+    while i < len(left):
+        result.append(left[i])
+        i += 1
+    
+    # Добавляем оставшиеся элементы из правого массива (если есть)
+    while j < len(right):
+        result.append(right[j])
+        j += 1
     
     return result
 
-def merge_sort_demo():
-    example_array = [38, 27, 43, 3, 9, 82, 10]
-    
-    print("Исходный массив:")
-    print_array(example_array)
-    
-    sorted_array = merge_sort(example_array)
-    
-    print("\nОтсортированный массив:")
-    print_array(sorted_array)
+#сортировка Шелла
 
-
-# Сортировка Шелла
-def shell_sort(array):
-    n = len(array)
+def shell_sort(arr):
+    """
+    Сортировка Шелла - улучшенная версия сортировки вставками,
+    которая сортирует элементы на определенных расстояниях (промежутках)
+    """
+    n = len(arr)  # Получаем длину массива
     
-    gap = n // 2
+    # Начинаем с большого промежутка, затем уменьшаем его
+    gap = n // 2  # Начальный промежуток
+    
     while gap > 0:
+        # Выполняем сортировку вставками для этого промежутка
         for i in range(gap, n):
-            temp = array[i]
-            j = i
+            temp = arr[i]  # Сохраняем текущий элемент
+            j = i          # Начинаем с текущей позиции
             
-            while j >= gap and array[j - gap] > temp:
-                array[j] = array[j - gap]
-                j -= gap
+            # Сдвигаем элементы, пока не найдем правильную позицию
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]  # Сдвигаем элемент
+                j -= gap               # Переходим к предыдущему элементу с шагом gap
             
-            array[j] = temp
+            # Вставляем сохраненный элемент в правильную позицию
+            arr[j] = temp
         
+        # Уменьшаем промежуток
         gap //= 2
+    
+    return arr
 
-def shell_sort_demo():
-    example_array = [23, 12, 1, 8, 34, 56, 7]
-    
-    print("Исходный массив:")
-    print_array(example_array)
-    
-    shell_sort(example_array)
-    
-    print("\nОтсортированный массив:")
-    print_array(example_array)
+#быстрая сортировка 
 
+def quick_sort(arr):
+    """
+    Быстрая сортировка - алгоритм "разделяй и властвуй":
+    выбираем опорный элемент и разделяем массив на элементы меньше опорного
+    и элементы больше опорного, затем рекурсивно сортируем обе части
+    """
+    # Базовый случай: массивы длиной 0 или 1 уже отсортированы
+    if len(arr) <= 1:
+        return arr
+    
+    pivot = arr[len(arr) // 2]  # Выбираем опорный элемент (середина массива)
+    
+    # Разделяем массив на три части:
+    left = [x for x in arr if x < pivot]      # Элементы меньше опорного
+    middle = [x for x in arr if x == pivot]   # Элементы равные опорному
+    right = [x for x in arr if x > pivot]     # Элементы больше опорного
+    
+    # Рекурсивно сортируем левую и правую части, объединяем с серединой
+    return quick_sort(left) + middle + quick_sort(right)
 
-# Быстрая сортировка
-def quick_sort(array, low=0, high=None):
-    if high is None:
-        high = len(array) - 1
-    
-    if low < high:
-        pi = partition(array, low, high)
-        
-        quick_sort(array, low, pi - 1)
-        quick_sort(array, pi + 1, high)
+#пирамидальная сортировка 
 
-def partition(array, low, high):
-    pivot = array[high]
-    i = low - 1
-    
-    for j in range(low, high):
-        if array[j] <= pivot:
-            i += 1
-            array[i], array[j] = array[j], array[i]
-    
-    array[i + 1], array[high] = array[high], array[i + 1]
-    return i + 1
-
-def quick_sort_demo():
-    example_array = [10, 7, 8, 9, 1, 5]
-    
-    print("Исходный массив:")
-    print_array(example_array)
-    
-    quick_sort(example_array)
-    
-    print("\nОтсортированный массив:")
-    print_array(example_array)
-
-
-# Пирамидальная сортировка
 def heap_sort(arr):
-    n = len(arr)
+    """
+    Пирамидальная сортировка - преобразуем массив в двоичную кучу (heap),
+    затем последовательно извлекаем максимальные элементы
+    """
+    n = len(arr)  # Получаем длину массива
     
+    # Построение max-heap (перегруппировка массива)
+    # Начинаем с последнего нелистового узла
     for i in range(n // 2 - 1, -1, -1):
         heapify(arr, n, i)
     
+    # Извлекаем элементы из кучи один за другим
     for i in range(n - 1, 0, -1):
-        arr[0], arr[i] = arr[i], arr[0]
+        # Перемещаем текущий корень (максимальный элемент) в конец
+        arr[i], arr[0] = arr[0], arr[i]
+        
+        # Вызываем heapify на уменьшенной куче
         heapify(arr, i, 0)
+    
+    return arr
 
-def heapify(arr, size, root_index):
-    largest = root_index
-    left_child = 2 * root_index + 1
-    right_child = 2 * root_index + 2
+def heapify(arr, n, i):
+    """
+    Преобразование поддерева в max-heap
+    """
+    largest = i        # Инициализируем наибольший элемент как корень
+    left = 2 * i + 1   # Левый дочерний элемент
+    right = 2 * i + 2  # Правый дочерний элемент
     
-    if left_child < size and arr[left_child] > arr[largest]:
-        largest = left_child
+    # Если левый дочерний элемент существует и больше корня
+    if left < n and arr[left] > arr[largest]:
+        largest = left
     
-    if right_child < size and arr[right_child] > arr[largest]:
-        largest = right_child
+    # Если правый дочерний элемент существует и больше текущего наибольшего
+    if right < n and arr[right] > arr[largest]:
+        largest = right
     
-    if largest != root_index:
-        arr[root_index], arr[largest] = arr[largest], arr[root_index]
-        heapify(arr, size, largest)
-
-def heap_sort_demo():
-    example_array = [12, 11, 13, 5, 6, 7]
-    
-    print("Исходный массив:")
-    print_array(example_array)
-    
-    heap_sort(example_array)
-    
-    print("\nОтсортированный массив:")
-    print_array(example_array)
-
-
-# Линейный поиск
-def linear_search(array, target):
-    for i in range(len(array)):
-        if array[i] == target:
-            return i
-    return -1
-
-def linear_search_demo():
-    data = [3, 8, 1, 10, 5]
-    key = 10
-    result = linear_search(data, key)
-    
-    if result != -1:
-        print(f"Элемент {key} найден на индексе {result}")
-    else:
-        print(f"Элемент {key} не найден")
-
-
-# Бинарный поиск
-def binary_search(array, target):
-    low = 0
-    high = len(array) - 1
-    
-    while low <= high:
-        mid = low + (high - low) // 2
+    # Если наибольший элемент не корень
+    if largest != i:
+        # Меняем местами корень и наибольший элемент
+        arr[i], arr[largest] = arr[largest], arr[i]
         
-        if array[mid] == target:
-            return mid
-        elif array[mid] < target:
-            low = mid + 1
-        else:
-            high = mid - 1
+        # Рекурсивно преобразуем затронутое поддерево
+        heapify(arr, n, largest)
+
+#последовательный поиск 
+
+def linear_search(arr, target):
+    """
+    Последовательный поиск - проверяем каждый элемент массива по порядку
+    """
+    # Проходим по всем элементам массива
+    for i in range(len(arr)):
+        # Если нашли целевой элемент
+        if arr[i] == target:
+            return i  # Возвращаем индекс найденного элемента
     
+    # Если элемент не найден, возвращаем -1
     return -1
 
-def binary_search_demo():
-    sorted_array = [1, 3, 5, 7, 9, 11]
-    search_key = 7
-    index = binary_search(sorted_array, search_key)
-    
-    if index != -1:
-        print(f"Значение {search_key} найдено на индексе {index}")
-    else:
-        print(f"Значение {search_key} не найдено в массиве.")
+#бинарный поиск 
 
-
-# Интерполяционный поиск
-def interpolation_search(array, target):
-    low = 0
-    high = len(array) - 1
+def binary_search(arr, target):
+    """
+    Бинарный поиск - работает только на отсортированных массивах.
+    На каждом шаге уменьшает область поиска вдвое.
+    """
+    left = 0                    # Левая граница поиска
+    right = len(arr) - 1        # Правая граница поиска
     
-    while low <= high and target >= array[low] and target <= array[high]:
+    # Пока левая граница не превысила правую
+    while left <= right:
+        mid = (left + right) // 2  # Находим середину
+        
+        # Если элемент в середине равен целевому
+        if arr[mid] == target:
+            return mid  # Возвращаем индекс
+        
+        # Если целевой элемент меньше среднего
+        elif arr[mid] > target:
+            right = mid - 1  # Ищем в левой половине
+        
+        # Если целевой элемент больше среднего
+        else:
+            left = mid + 1   # Ищем в правой половине
+    
+    # Если элемент не найден
+    return -1
+
+#интерполирующий поиск 
+
+def interpolation_search(arr, target):
+    """
+    Интерполирующий поиск - улучшенный бинарный поиск, который
+    использует интерполяцию для определения позиции поиска
+    """
+    low = 0                    # Нижняя граница
+    high = len(arr) - 1        # Верхняя граница
+    
+    # Пока целевой элемент находится между границами и границы не совпали
+    while low <= high and target >= arr[low] and target <= arr[high]:
+        # Если границы совпали
         if low == high:
-            if array[low] == target:
+            # Если элемент найден, возвращаем индекс
+            if arr[low] == target:
                 return low
-            return -1
+            return -1  # Иначе возвращаем -1
         
-        pos = low + ((high - low) // (array[high] - array[low])) * (target - array[low])
-        pos = min(max(pos, low), high)
+        # Вычисляем позицию с помощью интерполяционной формулы
+        # Формула: pos = low + ((target - arr[low]) * (high - low)) // (arr[high] - arr[low])
+        pos = low + ((target - arr[low]) * (high - low)) // (arr[high] - arr[low])
         
-        if array[pos] == target:
-            return pos
-        elif array[pos] < target:
-            low = pos + 1
+        # Если элемент найден
+        if arr[pos] == target:
+            return pos  # Возвращаем позицию
+        
+        # Если целевой элемент меньше элемента в позиции pos
+        if arr[pos] > target:
+            high = pos - 1  # Ищем в левой части
         else:
-            high = pos - 1
+            low = pos + 1   # Ищем в правой части
     
+    # Если элемент не найден
     return -1
 
-def interpolation_search_demo():
-    sorted_array = [10, 15, 20, 25, 30, 35, 40, 45, 50]
-    search_key = 35
-    index = interpolation_search(sorted_array, search_key)
-    
-    if index != -1:
-        print(f"Значение {search_key} найдено на индексе {index}")
-    else:
-        print(f"Значение {search_key} не найдено в массиве.")
+#поиск Фибоначчи 
 
-
-# Поиск Фибоначчи
-def fibonacci_search(array, x):
-    n = len(array)
+def fibonacci_search(arr, target):
+    """
+    Поиск Фибоначчи - использует числа Фибоначчи для определения
+    позиций сравнения, работает на отсортированных массивах
+    """
+    n = len(arr)  # Длина массива
     
-    fib_m2 = 0
-    fib_m1 = 1
-    fib_m = fib_m2 + fib_m1
+    # Инициализируем числа Фибоначчи
+    fib_m2 = 0          # (m-2)-е число Фибоначчи
+    fib_m1 = 1          # (m-1)-е число Фибоначчи
+    fib_m = fib_m2 + fib_m1  # m-е число Фибоначчи
     
+    # Находим наименьшее число Фибоначчи, большее или равное n
     while fib_m < n:
         fib_m2 = fib_m1
         fib_m1 = fib_m
         fib_m = fib_m2 + fib_m1
     
-    offset = -1
+    offset = -1  # Отметка об исключенном диапазоне
     
+    # Пока есть элементы для проверки
     while fib_m > 1:
+        # Проверяем, valid ли fib_m2
         i = min(offset + fib_m2, n - 1)
         
-        if array[i] < x:
+        # Если target больше значения в i, отсекаем подмассив от offset до i
+        if arr[i] < target:
             fib_m = fib_m1
             fib_m1 = fib_m2
             fib_m2 = fib_m - fib_m1
             offset = i
-        elif array[i] > x:
+        
+        # Если target меньше значения в i, отсекаем подмассив после i
+        elif arr[i] > target:
             fib_m = fib_m2
             fib_m1 = fib_m1 - fib_m2
             fib_m2 = fib_m - fib_m1
+        
+        # Элемент найден
         else:
             return i
     
-    if fib_m1 and offset + 1 < n and array[offset + 1] == x:
+    # Сравниваем последний элемент
+    if fib_m1 == 1 and offset + 1 < n and arr[offset + 1] == target:
         return offset + 1
     
+    # Элемент не найден
     return -1
 
-def fibonacci_search_demo():
-    sorted_array = [10, 22, 35, 40, 45, 50, 80, 82, 85, 90, 100]
-    x = 85
-    result = fibonacci_search(sorted_array, x)
-    
-    if result != -1:
-        print(f"Элемент {x} найден на индексе {result}")
-    else:
-        print(f"Элемент {x} не найден в массиве.")
-
-
-# Вспомогательная функция для вывода массива
-def print_array(arr):
-    print(' '.join(map(str, arr)))
-
-
-# Демонстрация всех алгоритмов
-if __name__ == "__main__":
-    print("=== СОРТИРОВКА ВЫБОРОМ ===")
-    selection_sort_demo()
-    
-    print("\n=== СОРТИРОВКА ПУЗЫРЬКОМ ===")
-    bubble_sort_demo()
-    
-    print("\n=== СОРТИРОВКА ВСТАВКАМИ ===")
-    insertion_sort_demo()
-    
-    print("\n=== СОРТИРОВКА СЛИЯНИЕМ ===")
-    merge_sort_demo()
-    
-    print("\n=== СОРТИРОВКА ШЕЛЛА ===")
-    shell_sort_demo()
-    
-    print("\n=== БЫСТРАЯ СОРТИРОВКА ===")
-    quick_sort_demo()
-    
-    print("\n=== ПИРАМИДАЛЬНАЯ СОРТИРОВКА ===")
-    heap_sort_demo()
-    
-    print("\n=== ЛИНЕЙНЫЙ ПОИСК ===")
-    linear_search_demo()
-    
-    print("\n=== БИНАРНЫЙ ПОИСК ===")
-    binary_search_demo()
-    
-    print("\n=== ИНТЕРПОЛЯЦИОННЫЙ ПОИСК ===")
-    interpolation_search_demo()
-    
-    print("\n=== ПОИСК ФИБОНАЧЧИ ===")
-    fibonacci_search_demo()
