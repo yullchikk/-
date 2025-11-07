@@ -43,3 +43,7 @@ public class BinaryTreeTraversal {
         System.out.print("Postorder: "); postorder(root); System.out.println();
     }
 }
+// Результат вывода 
+// Preorder: 1 2 4 5 3
+// Inorder: 4 2 5 1 3
+// Postorder: 4 5 2 3 1
